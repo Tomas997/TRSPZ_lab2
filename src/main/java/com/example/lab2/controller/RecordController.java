@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/record")
 @AllArgsConstructor
 public class RecordController {
 
@@ -21,7 +20,7 @@ public class RecordController {
     private RecordMapper recordMapper;
 
 
-    @GetMapping("/{record_id}")
+    @GetMapping("/record/{record_id}")
     public ResponseEntity<RecordResponseDto> getRecordById(@PathVariable("record_id") int recordId) {
         Record record = recordService.getRecordById(recordId);
         if (record == null) {
@@ -31,20 +30,20 @@ public class RecordController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @DeleteMapping("/{record_id}")
+    @DeleteMapping("/record/{record_id}")
     public ResponseEntity<Void> deleteRecordById(@PathVariable("record_id") int recordId) {
         recordService.deleteRecordById(recordId);
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping
+    @PostMapping("/record")
     public ResponseEntity<RecordResponseDto> createRecord(@RequestBody RecordCreateDto recordCreateDto) {
         Record record = recordService.createRecord(recordCreateDto);
         RecordResponseDto responseDto = recordMapper.categoryToCategoryResponseDto(record);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping("/record")
     public ResponseEntity<List<RecordResponseDto>> getRecords(
             @RequestParam(value = "user_id", required = false) Integer userId,
             @RequestParam(value = "category_id", required = false) Integer categoryId) {
@@ -55,4 +54,5 @@ public class RecordController {
         List<RecordResponseDto> responseDtos = recordMapper.categoryListToCategoryResponseDtoList(records);
         return ResponseEntity.ok(responseDtos);
     }
+
 }

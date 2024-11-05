@@ -1,0 +1,7 @@
+services:
+  app:
+    restart: always
+    build: .
+    container_name: trspz_lab2
+    ports:
+      - "8080:8080"
