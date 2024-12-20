@@ -5,6 +5,7 @@ import com.example.lab2.dto.record.RecordResponseDto;
 import com.example.lab2.entity.Record;
 import com.example.lab2.mapper.RecordMapper;
 import com.example.lab2.service.RecordService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,7 @@ public class RecordController {
     }
 
     @PostMapping("/record")
-    public ResponseEntity<RecordResponseDto> createRecord(@RequestBody RecordCreateDto recordCreateDto) {
+    public ResponseEntity<RecordResponseDto> createRecord(@RequestBody @Valid RecordCreateDto recordCreateDto) {
         Record record = recordService.createRecord(recordCreateDto);
         RecordResponseDto responseDto = recordMapper.categoryToCategoryResponseDto(record);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);

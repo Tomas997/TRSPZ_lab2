@@ -2,42 +2,41 @@ package com.example.lab2.service.impl;
 
 import com.example.lab2.dto.record.RecordCreateDto;
 import com.example.lab2.entity.Record;
+import com.example.lab2.repository.RecordRepository;
 import com.example.lab2.service.RecordService;
+import com.example.lab2.service.exeption.RecordNotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class RecordServiceImpl implements RecordService {
-
-    private final Map<Integer, Record> records = new HashMap<>();
-    private final AtomicInteger idCounter = new AtomicInteger(1);
+    private RecordRepository recordRepository;
 
     @Override
     public Record getRecordById(int id) {
-        return records.get(id);
+        return recordRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(String.valueOf(id)));
     }
 
     @Override
     public void deleteRecordById(int id) {
-        records.remove(id);
+        recordRepository.deleteById(id);
     }
 
     @Override
     public Record createRecord(RecordCreateDto recordCreateDto) {
-        int newId = idCounter.getAndIncrement();
         Record record = Record.builder()
-                .id(newId)
                 .userId(recordCreateDto.getUserId())
                 .categoryId(recordCreateDto.getCategoryId())
                 .timeCreationRecord(LocalDateTime.now())
                 .sumOfSpent(recordCreateDto.getSumOfSpent())
                 .build();
-        records.put(newId, record);
-        return record;
+        return recordRepository.save(record);
+
     }
 
     @Override
@@ -46,7 +45,7 @@ public class RecordServiceImpl implements RecordService {
             throw new IllegalArgumentException("Параметри userId або categoryId мають бути вказані");
         }
 
-        return records.values().stream()
+        return recordRepository.findAll().stream()
                 .filter(record -> (userId == null || record.getUserId() == userId) &&
                         (categoryId == null || record.getCategoryId() == categoryId))
                 .collect(Collectors.toList());

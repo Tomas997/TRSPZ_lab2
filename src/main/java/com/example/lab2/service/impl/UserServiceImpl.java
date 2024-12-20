@@ -2,43 +2,40 @@ package com.example.lab2.service.impl;
 
 import com.example.lab2.dto.user.UserCreateDto;
 import com.example.lab2.entity.User;
+import com.example.lab2.repository.UserRepository;
 import com.example.lab2.service.UserService;
+import com.example.lab2.service.exeption.UserNotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
-
-    private final Map<Integer, User> users = new HashMap<>();
-    private final AtomicInteger idCounter = new AtomicInteger(1);
+    private final UserRepository userRepository;
 
     @Override
     public List<User> getAllUsers() {
-        return new ArrayList<>(users.values());
+        return userRepository.findAll();
     }
 
     @Override
     public User getUserById(int id) {
-        return users.get(id);
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(String.valueOf(id)));
     }
 
     @Override
     public User createUser(UserCreateDto userCreateDto) {
-        int newId = idCounter.getAndIncrement();
         User user = User.builder()
-                .id(newId)
                 .name(userCreateDto.getName())
                 .build();
-        users.put(newId, user);
-        return user;
+        return userRepository.save(user);
     }
 
     @Override
     public void deleteUserById(int id) {
-        users.remove(id);
+        userRepository.deleteById(id);
     }
 }
 
