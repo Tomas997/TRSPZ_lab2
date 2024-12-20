@@ -1,5 +1,6 @@
 package com.example.lab2.controller;
 
+import com.example.lab2.dto.exception.MyValidationException;
 import com.example.lab2.dto.record.RecordCreateDto;
 import com.example.lab2.dto.record.RecordResponseDto;
 import com.example.lab2.entity.Record;
@@ -9,19 +10,23 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/record")
 @AllArgsConstructor
 public class RecordController {
 
     private RecordService recordService;
     private RecordMapper recordMapper;
 
-
-    @GetMapping("/record/{record_id}")
+    @GetMapping("/{record_id}")
     public ResponseEntity<RecordResponseDto> getRecordById(@PathVariable("record_id") int recordId) {
         Record record = recordService.getRecordById(recordId);
         if (record == null) {
@@ -31,20 +36,30 @@ public class RecordController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @DeleteMapping("/record/{record_id}")
+    @DeleteMapping("/{record_id}")
     public ResponseEntity<Void> deleteRecordById(@PathVariable("record_id") int recordId) {
         recordService.deleteRecordById(recordId);
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/record")
-    public ResponseEntity<RecordResponseDto> createRecord(@RequestBody @Valid RecordCreateDto recordCreateDto) {
+    @PostMapping
+    public ResponseEntity<RecordResponseDto> createRecord(@RequestBody @Valid RecordCreateDto recordCreateDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+
+            Map<String, String> errors = bindingResult.getFieldErrors().stream()
+                    .collect(Collectors.toMap(
+                            FieldError::getField,
+                            FieldError::getDefaultMessage
+                    ));
+
+            throw new MyValidationException(errors);
+        }
         Record record = recordService.createRecord(recordCreateDto);
         RecordResponseDto responseDto = recordMapper.categoryToCategoryResponseDto(record);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
-    @GetMapping("/record")
+    @GetMapping
     public ResponseEntity<List<RecordResponseDto>> getRecords(
             @RequestParam(value = "user_id", required = false) Integer userId,
             @RequestParam(value = "category_id", required = false) Integer categoryId) {

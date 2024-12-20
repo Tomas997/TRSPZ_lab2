@@ -1,11 +1,10 @@
 package com.example.lab2.service;
 
 import com.example.lab2.entity.Account;
-import com.example.lab2.repository.AccountRepository;
 
 public interface AccountService {
 
-    Account getOrCreateAccount(int userId);
+    Account getAccount(int userId);
 
     void addMoney(int userId, double amount);
 

@@ -3,6 +3,7 @@ package com.example.lab2.service.impl;
 import com.example.lab2.entity.Account;
 import com.example.lab2.repository.AccountRepository;
 import com.example.lab2.service.AccountService;
+import com.example.lab2.service.exeption.UserNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,10 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
 
     @Override
+    public Account getAccount(int userId) {
+        return accountRepository.findByUserId(userId).orElseThrow(() -> new UserNotFoundException(String.valueOf(userId)));
+    }
+
     public Account getOrCreateAccount(int userId) {
         return accountRepository.findByUserId(userId)
                 .orElseGet(() -> {
@@ -25,14 +30,14 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void addMoney(int userId, double amount) {
-        Account account = getOrCreateAccount(userId);
+        Account account = getAccount(userId);
         account.addMoney(amount);
         accountRepository.save(account);
     }
 
     @Override
     public void withdrawMoney(int userId, double amount) {
-        Account account = getOrCreateAccount(userId);
+        Account account = getAccount(userId);
         account.withdrawMoney(amount);
         accountRepository.save(account);
     }
