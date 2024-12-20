@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: lab2
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/web_cosmocats
+#    username: ${USERNAME}
+#    password: ${PASSWORD}
+#    driver-class-name: org.postgresql.Driver

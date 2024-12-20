@@ -5,3 +5,8 @@ services:
     container_name: trspz_lab2
     ports:
       - "8080:8080"
+  db:
+    image: postgres:15.4-alpine3.18
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: test

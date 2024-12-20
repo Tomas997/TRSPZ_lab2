@@ -6,15 +6,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
+@Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "records")
-public class Record {
+@Table(name = "accounts")
+public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -23,11 +21,17 @@ public class Record {
     private int userId;
 
     @Column(nullable = false)
-    private int categoryId;
+    private double balance;
 
-    @Column(nullable = false)
-    private LocalDateTime timeCreationRecord;
+    public void addMoney(double amount) {
+        this.balance += amount;
+    }
 
-    @Column(nullable = false)
-    private double sumOfSpent;
+    public void withdrawMoney(double amount) {
+        if (this.balance >= amount) {
+            this.balance -= amount;
+        } else {
+            throw new IllegalArgumentException("Insufficient balance");
+        }
+    }
 }
