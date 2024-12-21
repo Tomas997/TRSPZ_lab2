@@ -106,9 +106,8 @@
 
 - **Створення користувачів:**
 
-  - Запит:
+  - Запит POST /users:
     ```json
-    POST /users
     {
         "name": "John Doe"
     }
@@ -116,9 +115,8 @@
 
 - **Створення категорій:**
 
-  - Запит:
+  - Запит POST /categories:
     ```json
-    POST /categories
     {
         "name": "Food"
     }
@@ -126,9 +124,8 @@
 
 - **Створення запису про витрати:**
 
-  - Запит:
+  - Запит POST /records:
     ```json
-    POST /records
     {
         "userId": 1,
         "categoryId": 2,
@@ -141,25 +138,19 @@
 1. **Додавання коштів на рахунок користувача:**
 
    - Запит:
-     ```json
-     POST /accounts/add/{userId}?amount=100.00
-     ```
+     POST */accounts/add/{userId}?amount=100.00*
    - Опис: додає 100.00 до балансу рахунку користувача з ID = `userId`.
 
 2. **Списання коштів з рахунку:**
 
    - Запит:
-     ```json
-     POST /accounts/withdraw/{userId}?amount=50.00
-     ```
+     *POST /accounts/withdraw/{userId}?amount=50.00*
    - Опис: списує 50.00 з рахунку користувача з ID = `userId`. Якщо баланс недостатній, буде повернуто помилку `InsufficientFundsException`.
 
 3. **Перевірка балансу рахунку користувача:**
 
    - Запит:
-     ```json
-     GET /accounts/{userId}
-     ```
+     *GET /accounts/{userId}*
    - Опис: повертає поточний баланс рахунку користувача.
 
 ## Валідація та обробка помилок
