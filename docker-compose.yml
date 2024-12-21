@@ -2,7 +2,7 @@ services:
   app:
     restart: always
     build: .
-    container_name: trspz_lab2
+    container_name: trspz_lab3
     ports:
       - "8080:8080"
   db:
