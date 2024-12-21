@@ -1,16 +1,19 @@
 package com.example.lab2.dto.account;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
 public class AccountCreateDto {
-    @NotBlank(message = "UserId is mandatory")
-    private int userId;
-    @NotBlank(message = "Balance is mandatory")
-    private double balance;
+    @NotNull
+    private Integer userId;
+    @NotNull(message = "Balance is mandatory")
+    @Min(value = 0, message = "Balance is mandatory")
+    private Double balance;
+
 }
 
 
