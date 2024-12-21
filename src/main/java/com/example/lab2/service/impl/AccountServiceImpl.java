@@ -7,6 +7,8 @@ import com.example.lab2.service.exeption.UserNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class AccountServiceImpl implements AccountService {
@@ -26,6 +28,10 @@ public class AccountServiceImpl implements AccountService {
                     account.setBalance(0);
                     return accountRepository.save(account);
                 });
+    }
+
+    public List<Account> getAllAccounts(){
+        return accountRepository.findAll();
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.example.lab2.dto.category.CategoryCreateDto;
 import com.example.lab2.entity.Category;
 import com.example.lab2.repository.CategoryRepository;
 import com.example.lab2.service.CategoryService;
+import com.example.lab2.service.exeption.CategoryNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> getAllCategories() {
         return new ArrayList<>(categoryRepository.findAll());
+    }
+
+    public Category getCategoryById(int id) {
+        return categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException(String.valueOf(id)));
     }
 
     @Override

@@ -33,6 +33,13 @@ public class CategoryController {
         return ResponseEntity.ok(categoryResponseDtos);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<CategoryResponseDto> getCategoryById(@PathVariable int id) {
+        Category categories = categoryService.getCategoryById(id);
+        CategoryResponseDto categoryResponseDtos = categoryMapper.categoryToCategoryResponseDto(categories);
+        return ResponseEntity.ok(categoryResponseDtos);
+    }
+
     @PostMapping
     public ResponseEntity<CategoryResponseDto> createCategory(@RequestBody @Valid CategoryCreateDto categoryCreateDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

@@ -1,5 +1,6 @@
 package com.example.lab2.entity;
 
+import com.example.lab2.entity.exception.InsufficientFundsException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,7 +32,8 @@ public class Account {
         if (this.balance >= amount) {
             this.balance -= amount;
         } else {
-            throw new IllegalArgumentException("Insufficient balance");
+            throw new InsufficientFundsException(amount, this.balance);
         }
     }
+
 }

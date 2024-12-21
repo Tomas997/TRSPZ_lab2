@@ -2,8 +2,13 @@ package com.example.lab2.controller.exeption;
 
 
 import com.example.lab2.dto.exception.MyValidationException;
+import com.example.lab2.entity.exception.InsufficientFundsException;
 import com.example.lab2.service.exeption.CategoryNotFoundException;
-import org.springframework.http.*;
+import com.example.lab2.service.exeption.RecordNotFoundException;
+import com.example.lab2.service.exeption.UserNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -29,6 +34,22 @@ public class GlobalExceptionalHandler extends ResponseEntityExceptionHandler {
         return problemDetail;
     }
 
+    @ExceptionHandler(RecordNotFoundException.class)
+    public ProblemDetail handleRecordNotFoundException(RecordNotFoundException ex) {
+        ProblemDetail problemDetail = forStatusAndDetail(NOT_FOUND, ex.getMessage());
+        problemDetail.setType(URI.create("record-not-found"));
+        problemDetail.setTitle("Record Not Found");
+        return problemDetail;
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ProblemDetail handleUserNotFoundException(UserNotFoundException ex) {
+        ProblemDetail problemDetail = forStatusAndDetail(NOT_FOUND, ex.getMessage());
+        problemDetail.setType(URI.create("user-not-found"));
+        problemDetail.setTitle("User Not Found");
+        return problemDetail;
+    }
+
     @ExceptionHandler(MyValidationException.class)
     public ResponseEntity<Map<String, Object>> handleValidationException(MyValidationException ex) {
         Map<String, Object> response = new HashMap<>();
@@ -38,5 +59,14 @@ public class GlobalExceptionalHandler extends ResponseEntityExceptionHandler {
 
         return ResponseEntity.badRequest().body(response);
     }
+
+    @ExceptionHandler(InsufficientFundsException.class)
+    public ProblemDetail handleInsufficientFundsException(InsufficientFundsException ex) {
+        ProblemDetail problemDetail = forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
+        problemDetail.setType(URI.create("insufficient-funds"));
+        problemDetail.setTitle("Insufficient Funds");
+        return problemDetail;
+    }
+
 }
 

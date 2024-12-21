@@ -5,6 +5,8 @@ import com.example.lab2.service.impl.AccountServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/accounts")
@@ -16,6 +18,11 @@ public class AccountController {
     @GetMapping("/{userId}")
     public Account getAccountByUserId(@PathVariable int userId) {
         return accountService.getAccount(userId);
+    }
+
+    @GetMapping
+    public List<Account> getAllAccounts() {
+        return accountService.getAllAccounts();
     }
 
     @PostMapping("/add/{userId}")
