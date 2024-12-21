@@ -1,5 +1,6 @@
 package com.example.lab2.service.impl;
 
+import com.example.lab2.dto.account.AccountCreateDto;
 import com.example.lab2.entity.Account;
 import com.example.lab2.repository.AccountRepository;
 import com.example.lab2.service.AccountService;
@@ -20,12 +21,13 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.findByUserId(userId).orElseThrow(() -> new UserNotFoundException(String.valueOf(userId)));
     }
 
-    public Account getOrCreateAccount(int userId) {
-        return accountRepository.findByUserId(userId)
+    @Override
+    public Account getOrCreateAccount(AccountCreateDto accountCreateDto) {
+        return accountRepository.findByUserId(accountCreateDto.getUserId())
                 .orElseGet(() -> {
                     Account account = new Account();
-                    account.setUserId(userId);
-                    account.setBalance(0);
+                    account.setUserId(accountCreateDto.getUserId());
+                    account.setBalance(accountCreateDto.getBalance());
                     return accountRepository.save(account);
                 });
     }

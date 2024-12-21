@@ -1,5 +1,6 @@
 package com.example.lab2.controller;
 
+import com.example.lab2.dto.account.AccountCreateDto;
 import com.example.lab2.entity.Account;
 import com.example.lab2.service.impl.AccountServiceImpl;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,11 @@ public class AccountController {
     @GetMapping("/{userId}")
     public Account getAccountByUserId(@PathVariable int userId) {
         return accountService.getAccount(userId);
+    }
+
+    @PostMapping
+    public Account getOrCreateAccount(@RequestBody AccountCreateDto accountCreateDto) {
+        return accountService.getOrCreateAccount(accountCreateDto);
     }
 
     @GetMapping
