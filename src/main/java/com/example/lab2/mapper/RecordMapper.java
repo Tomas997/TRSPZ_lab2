@@ -8,6 +8,6 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface RecordMapper {
-    RecordResponseDto categoryToCategoryResponseDto(Record category);
-    List<RecordResponseDto> categoryListToCategoryResponseDtoList(List<Record> categoryList);
+    RecordResponseDto recordToRecordResponseDto(Record category);
+    List<RecordResponseDto> recordListToRecordResponseDtoList(List<Record> categoryList);
 }

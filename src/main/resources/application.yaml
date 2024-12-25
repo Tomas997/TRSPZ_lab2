@@ -1,6 +1,7 @@
 spring:
   application:
     name: lab3
+
   datasource:
     url: ${DB_URL}
     username: ${USERNAME}
@@ -15,3 +16,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+
+jwt:
+  secret: ${JWT}
