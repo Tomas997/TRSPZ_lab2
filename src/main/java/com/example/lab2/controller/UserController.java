@@ -32,7 +32,7 @@ public class UserController {
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
-        UserResponseDto responseDto = userMapper.categoryToCategoryResponseDto(user);
+        UserResponseDto responseDto = userMapper.userToUserResponseDto(user);
         return ResponseEntity.ok(responseDto);
     }
 
@@ -54,15 +54,12 @@ public class UserController {
 
             throw new MyValidationException(errors);
         }
-        User user = userService.createUser(userCreateDto);
-        UserResponseDto responseDto = userMapper.categoryToCategoryResponseDto(user);
+        UserResponseDto responseDto = userService.createUser(userCreateDto);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<UserResponseDto>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        List<UserResponseDto> userResponseDtos = userMapper.categoryListToCategoryResponseDtoList(users);
-        return ResponseEntity.ok(userResponseDtos);
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 }

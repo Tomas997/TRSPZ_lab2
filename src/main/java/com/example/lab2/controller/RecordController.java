@@ -32,7 +32,7 @@ public class RecordController {
         if (record == null) {
             return ResponseEntity.notFound().build();
         }
-        RecordResponseDto responseDto = recordMapper.categoryToCategoryResponseDto(record);
+        RecordResponseDto responseDto = recordMapper.recordToRecordResponseDto(record);
         return ResponseEntity.ok(responseDto);
     }
 
@@ -55,7 +55,7 @@ public class RecordController {
             throw new MyValidationException(errors);
         }
         Record record = recordService.createRecord(recordCreateDto);
-        RecordResponseDto responseDto = recordMapper.categoryToCategoryResponseDto(record);
+        RecordResponseDto responseDto = recordMapper.recordToRecordResponseDto(record);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
@@ -67,7 +67,7 @@ public class RecordController {
             return ResponseEntity.badRequest().body(null);
         }
         List<Record> records = recordService.getRecords(userId, categoryId);
-        List<RecordResponseDto> responseDtos = recordMapper.categoryListToCategoryResponseDtoList(records);
+        List<RecordResponseDto> responseDtos = recordMapper.recordListToRecordResponseDtoList(records);
         return ResponseEntity.ok(responseDtos);
     }
 
