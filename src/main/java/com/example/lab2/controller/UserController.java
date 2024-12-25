@@ -1,7 +1,7 @@
 package com.example.lab2.controller;
 
 import com.example.lab2.dto.exception.MyValidationException;
-import com.example.lab2.dto.user.UserCreateDto;
+import com.example.lab2.dto.user.UserSignUp;
 import com.example.lab2.dto.user.UserResponseDto;
 import com.example.lab2.entity.User;
 import com.example.lab2.mapper.UserMapper;
@@ -43,7 +43,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponseDto> createUser(@RequestBody @Valid UserCreateDto userCreateDto, BindingResult bindingResult) {
+    public ResponseEntity<UserResponseDto> createUser(@RequestBody @Valid UserSignUp userSignUp, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
 
             Map<String, String> errors = bindingResult.getFieldErrors().stream()
@@ -54,7 +54,7 @@ public class UserController {
 
             throw new MyValidationException(errors);
         }
-        UserResponseDto responseDto = userService.createUser(userCreateDto);
+        UserResponseDto responseDto = userMapper.userToUserResponseDto(userService.createUser(userMapper.userSignUpToUser(userSignUp)));
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
