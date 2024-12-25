@@ -5,6 +5,7 @@ import com.example.lab2.dto.exception.MyValidationException;
 import com.example.lab2.entity.exception.InsufficientFundsException;
 import com.example.lab2.service.exeption.CategoryNotFoundException;
 import com.example.lab2.service.exeption.RecordNotFoundException;
+import com.example.lab2.service.exeption.UserAlreadyExistsException;
 import com.example.lab2.service.exeption.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.ProblemDetail.forStatusAndDetail;
 
@@ -47,6 +49,14 @@ public class GlobalExceptionalHandler extends ResponseEntityExceptionHandler {
         ProblemDetail problemDetail = forStatusAndDetail(NOT_FOUND, ex.getMessage());
         problemDetail.setType(URI.create("user-not-found"));
         problemDetail.setTitle("User Not Found");
+        return problemDetail;
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ProblemDetail handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
+        ProblemDetail problemDetail = forStatusAndDetail(BAD_REQUEST, ex.getMessage());
+        problemDetail.setType(URI.create("user-already-exists"));
+        problemDetail.setTitle("User Already Exists");
         return problemDetail;
     }
 

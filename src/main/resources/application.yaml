@@ -17,5 +17,6 @@ spring:
     hibernate:
       ddl-auto: validate
 
-jwt:
-  secret: ${JWT}
+token:
+  signing:
+    key: ${JWT}
