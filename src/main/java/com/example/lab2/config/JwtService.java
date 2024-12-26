@@ -1,14 +1,14 @@
 package com.example.lab2.config;
 
 import com.example.lab2.entity.User;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import  io.jsonwebtoken.Claims;
-import  io.jsonwebtoken.Jwts;
 
 import java.security.Key;
 import java.util.Date;
@@ -23,6 +23,10 @@ public class JwtService {
 
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    public String extractUserId(String token) {
+        return extractClaim(token, claim -> claim.get("id").toString());
     }
 
     public String generateToken(UserDetails userDetails) {

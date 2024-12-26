@@ -4,7 +4,7 @@ import com.example.lab2.dto.account.AccountCreateDto;
 import com.example.lab2.entity.Account;
 import com.example.lab2.repository.AccountRepository;
 import com.example.lab2.service.AccountService;
-import com.example.lab2.service.exeption.UserNotFoundException;
+import com.example.lab2.service.exeption.AccountNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +17,8 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
 
     @Override
-    public Account getAccount(int userId) {
-        return accountRepository.findByUserId(userId).orElseThrow(() -> new UserNotFoundException(userId));
+    public Account getAccount(int accountId) {
+        return accountRepository.findById(accountId).orElseThrow(() -> new AccountNotFoundException(accountId));
     }
 
     @Override

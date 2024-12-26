@@ -1,11 +1,12 @@
 package com.example.lab2.controller;
 
 import com.example.lab2.dto.exception.MyValidationException;
-import com.example.lab2.dto.user.UserSignUp;
 import com.example.lab2.dto.user.UserResponseDto;
+import com.example.lab2.dto.user.UserSignUp;
 import com.example.lab2.entity.User;
 import com.example.lab2.mapper.UserMapper;
 import com.example.lab2.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,6 +37,15 @@ public class UserController {
         UserResponseDto responseDto = userMapper.userToUserResponseDto(user);
         return ResponseEntity.ok(responseDto);
     }
+
+    @GetMapping("/getId")
+    public ResponseEntity<Map<String, Integer>> getUserId(HttpServletRequest request) {
+        Integer id = Integer.valueOf(request.getAttribute("id").toString());
+        Map<String, Integer> response = new HashMap<>();
+        response.put("id", id);
+        return ResponseEntity.ok(response);
+    }
+
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deleteUserById(@PathVariable("userId") int userId) {
